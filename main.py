@@ -71,7 +71,9 @@ def message():
 def login(user: User):
     if user.email == "admin@gmail.com" and user.password == "admin":
         token: str = create_token(user.dict())
-    return JSONResponse(status_code=200, content=token)Movie
+        return JSONResponse(status_code=200, content={"token": token})
+    else:
+        raise HTTPException(status_code=401, detail="Credenciales incorrectas")
 
 @app.get('/movies', tags = ['movies'], response_model=List[Movie], status_code=200, dependencies=[Depends(JWTBearer())])
 def get_movies() -> List[Movie]:
